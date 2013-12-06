@@ -1,0 +1,3 @@
+[submodule "fabtasks"]
+	path = fabtasks
+	url = git@github.com:GaretJax/fabtasks.git
