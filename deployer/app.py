@@ -8,6 +8,20 @@ from . import applications, views as _old, hosts
 from .applications.tasks import BuildsUpdater
 from .routing.tasks import RoutesUpdater
 
+# TODO: Monkey path requests 1.2.3 to support SNI. The lateste version supports
+# this out of the box, but docker-py currently requires requests==1.2.3
+
+import requests
+
+def fileno(self):
+    return self.socket.fileno()
+
+def close(self):
+    return self.connection.shutdown()
+
+requests.pyopenssl.WrappedSocket.close = close
+requests.pyopenssl.WrappedSocket.fileno = fileno
+
 
 CONFIG_KEY_PREFIX = 'DEPLOYER_'
 
