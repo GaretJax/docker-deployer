@@ -1,0 +1,13 @@
+{% extends "ajax_form.html" %}
+
+{% set html_classes='single-form-page' %}
+
+{% from 'forms.html' import confirmation_form %}
+
+{% block content %}
+	{% call confirmation_form(form, 'Shutdown confirmation', 'Stop') %}
+	<p>Are you sure you want to stop instance “{{ instance.container[:7] }}”?</p>
+	<p>This action cannot be undone.</p>
+	{% endcall %}
+{% endblock %}
+

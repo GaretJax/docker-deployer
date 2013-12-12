@@ -1,0 +1,13 @@
+{% extends "ajax_form.html" %}
+
+{% set html_classes='single-form-page' %}
+
+{% from 'forms.html' import confirmation_form %}
+
+{% block content %}
+	{% call confirmation_form(form, 'Deletion confirmation', 'Delete') %}
+	<p>Are you sure you want to delete the template named “{{ tpl.name }}”?</p>
+	<p>This action cannot be undone.</p>
+	{% endcall %}
+{% endblock %}
+

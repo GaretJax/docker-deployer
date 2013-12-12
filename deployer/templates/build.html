@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% set html_classes="build-details" %}
+
+{% block content %}
+
+<div class="button-header">
+	<h1>
+		<ol class="breadcrumb">
+			<li><a href="{{ url_for('.app', app_key=app.key) }}">{{ app.name }}</a></li>
+			<li>Builds</li>
+			<li class="active">{{ build.tag }}</li>
+		</ol>
+	</h1>
+	<a class="btn btn-primary btn-lg overlay-form" href="{{ url_for('.deploy', app_key=app.key, build=build.tag) }}">Fast deploy</a>
+</div>
+
+<dl class="dl-horizontal">
+	<dt>Commit details</dt>
+	<dd><a href="https://code.apps.wsf/projects/PADI/repos/padi-webshop/commits/{{ build.tag }}">{{ build.tag }}</a></dd>
+
+	<dt>Created</dt>
+	<dd>{{ build.created.strftime('%Y-%m-%d @ %H:%M:%S') }}</dd>
+
+	<dt>Image</dt>
+	<dd>{{ build.image }}</dd>
+</dl>
+
+<h2>Active instances</h2>
+<table class="table builds table-hover">
+	<thead>
+		<tr>
+			<th>Container</th>
+			<th>Created</th>
+			<th>Host</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+	{% for inst in build.active_instances %}
+		<tr>
+			<td><a href="{{ url_for('.instance', app_key=app.key, container_id=inst.container[:10]) }}">{{ inst.container[:7] }}</a></td>
+			<td>{{ inst.started.strftime('%Y-%m-%d @ %H:%M:%S') }}</td>
+			<td>{{ inst.host.name }}</td>
+			<td>
+				<a class="btn btn-primary btn-sm overlay-form" href="{{ url_for('.stop', app_key=app.key, container_id=inst.container) }}">Stop</a>
+			</td>
+		</tr>
+	{% endfor %}
+	</tbody>
+</table>
+
+<h2>Stopped instances</h2>
+<table class="table table-hover">
+	<thead>
+		<tr>
+			<th>Container</th>
+			<th>Created</th>
+			<th>Stopped</th>
+			<th>Host</th>
+		</tr>
+	</thead>
+	<tbody>
+	{% for inst in build.inactive_instances.limit(10) %}
+		<tr>
+			<td><a href="{{ url_for('.instance', app_key=app.key, container_id=inst.container[:10]) }}">{{ inst.container[:7] }}</a></td>
+			<td>{{ inst.started.strftime('%Y-%m-%d @ %H:%M:%S') }}</td>
+			<td>{{ inst.stopped.strftime('%Y-%m-%d @ %H:%M:%S') }}</td>
+			<td>{{ inst.host.name }}</td>
+		</tr>
+	{% endfor %}
+	</tbody>
+</table>
+{% with count=build.inactive_instances.count(), shown=5 %}
+	{% if count > shown %}
+		<p class="table-footer">{{ count - shown }} more inactive instances</p>
+	{% endif %}
+{% endwith %}
+
+
+<h2>Image specification</h2>
+<pre>{{ build.spec|format_json }}</pre>
+
+
+{% endblock %}

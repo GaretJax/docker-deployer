@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Releases</h1>
+
+<table class="table">
+	<thead>
+		
+	</thead>
+	<tbody>
+	{% for image in images %}
+		<tr>
+			<td>{{ image['Tag'] }}</td>
+			<td></td>
+			<td>
+				<button class="btn btn-default">Deploy</button>
+			</td>
+		</tr>
+	{% endfor %}
+	</tbody>
+</table>
+
+{% endblock %}
+

@@ -1,0 +1,31 @@
+{% extends "ajax_form.html" %}
+
+{% set html_classes='single-form-page' %}
+
+{% from 'forms.html' import hfield %}
+
+{% block content %}
+<div class="panel panel-default deploy-setup-form narrow-panel">
+	<div class="panel-heading">
+		<h1 class="panel-title">Deploy build “{{ build.tag }}”</h1>
+	</div>
+	<form method="post" action="" class="panel-body form-horizontal form-labels-right" role="form">
+		{{ form.csrf_token }}
+
+		{{ hfield(form.host, 8, 3) }}
+		{{ hfield(form.template, 8, 3) }}
+		{{ hfield(form.hostname, 8, 3) }}
+
+		<div class="form-group actions">
+			<hr />
+			<div class="col-sm-offset-3 col-sm-9">
+				<button type="submit" class="btn btn-primary">
+					Continue
+				</button>
+				<a href="" data-action="cancel" class="btn btn-link">Cancel</a>
+			</div>
+		</div>
+	</form>
+</div>
+{% endblock %}
+

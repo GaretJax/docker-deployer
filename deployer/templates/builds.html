@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Builds</h1>
+
+<table class="table builds table-striped">
+	<thead>
+		<tr>
+			<th>Commit</th>
+			<th>Created</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+	{% for tag, data in builds.iteritems() %}
+		<tr>
+			<td><a href="{{ code_commit_url(tag) }}">{{ tag }}</a></td>
+			<td>{{ data['created'].strftime('%Y-%m-%d @ %H:%M:%S') }}</td>
+			<td>
+				<a class="btn btn-primary" href="{{ url_for('deployer.make_build', build_tag=tag) }}">Deploy</a>
+			</td>
+		</tr>
+	{% endfor %}
+	</tbody>
+</table>
+{% endblock %}

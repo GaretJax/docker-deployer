@@ -1,0 +1,112 @@
+fieldset {
+	margin: 30px 0 20px;
+	border: 1px solid #ddd;
+	padding: 0 14px;
+	@include border-radius(10px);
+
+	legend {
+		width: auto;
+		padding: 0 10px;
+		border: 0;
+	}
+}
+
+label {
+	color: #666;
+	position: relative;
+}
+
+.form-group.required label:after {
+	content: "✽";
+	color: $brand-danger;
+	font-size: 0.8em;
+	padding-left: 1px;
+	position: absolute;
+	top: 4px;
+}
+
+.form-horizontal {
+	label {
+		padding-top: 7px;
+	}
+
+	&.form-labels-right label {
+		text-align: right;
+	}
+}
+
+.form-group {
+	.help-block + .errors {
+		margin-top: -5px;
+	}
+	&.has-error {
+		margin-bottom: 10px;
+
+		.help-block {
+			color: #737373;
+		}
+	}
+}
+
+.errors {
+	@extend .text-danger;
+	margin-top: 5px;
+	margin-bottom: 10px;
+	padding: 0 0 0 7px;
+
+	li {
+		display: block;
+		margin-left: 20px;
+		position: relative;
+	}
+
+	li:before {
+		content: "\e014";
+		font-family: 'Glyphicons Halflings';
+		font-style: normal;
+		font-weight: normal;
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+		margin-left: -20px;
+		position: absolute;
+	}
+}
+
+
+.single-form-page {
+	.panel {
+		margin: 20px auto 40px auto;
+	}
+}
+
+.panel form.panel-body {
+	padding: 20px 15px;
+
+	.form-group:last-child {
+		margin-bottom: 0;
+	}
+	
+	.form-group.actions {
+		margin-top: 0px;
+		margin-bottom: 5px;
+
+		> hr {
+			margin: 10px $grid-gutter-width/2 25px $grid-gutter-width/2;
+		}
+	}
+}
+
+.panel.confirmation-form form.panel-body {
+	padding-bottom: 10px;
+	.form-group.actions {
+		text-align: center;
+
+		hr {
+			margin-bottom: 15px;
+		}
+
+		div {
+			padding: 0 5px;
+		}
+	}
+}

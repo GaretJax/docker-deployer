@@ -1,0 +1,5 @@
+{% if request.is_xhr %}
+	{% block content %}{% endblock %}
+{% else %}
+	{% extends base_template|default("base.html") %}
+{% endif %}

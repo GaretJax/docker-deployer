@@ -6,6 +6,7 @@
 /*.egg
 /*.egg-info
 /dist
+/deps
 /build
 /eggs
 /sdist
@@ -23,4 +24,12 @@ pip-log.txt
 *.mo
 
 # Sphinx
-docs/_build
+/docs/_build
+
+# Static files
+/deployer/static/styles/*.css
+/deployer/static/scripts/*.js
+
+# Development data
+/*.db
+/data

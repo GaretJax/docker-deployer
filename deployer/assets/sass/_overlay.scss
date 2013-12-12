@@ -1,0 +1,36 @@
+#overlay {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	@include background(radial-gradient(
+		50% 45%,
+		ellipse cover,
+		rgba(#777, 0) 20%,
+		rgba(#777, .6) 100%
+	));
+	z-index: 10000;
+	padding: 60px;
+	overflow: auto;
+
+	> * {
+		margin: 0 auto;
+
+		@include box-shadow(
+			rgba(#000, .3) 0 0 35px
+		);
+	}
+
+	> .panel {
+		border-color: #aaa;
+	}
+
+	> .narrow-panel {
+		max-width: 700px;
+	}
+
+	> .narrower-panel {
+		max-width: 500px;
+	}
+}

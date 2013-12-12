@@ -1,0 +1,53 @@
+{% macro field(f) %}
+<div class="form-group{% if f.errors %} has-error{% endif %}">
+	{{ f.label() }}
+	{{ f(class='form-control')|safe }}
+	{% if f.errors %}
+		<ul class="errors">
+		{% for error in f.errors %}
+			<li>{{ error }}</li>
+		{% endfor %}
+		</ul>
+	{% endif %}
+</div>
+{% endmacro %}
+
+{% macro hfield(f, field_width=10, label_width=None, grid_size='sm') -%}
+{% set label_width=label_width or 12 - field_width -%}
+<div class="form-group{% if f.errors %} has-error{% endif %}{% if f.flags.required %} required{% endif %}">
+	{{ f.label(class='col-{}-{}'.format(grid_size, label_width)) }}
+	<div class="col-{{ grid_size }}-{{ field_width }}">{{ f(class='form-control', **kwargs)|safe }}</div>
+	{%- if f.description %}
+	<span class="help-block col-{{ grid_size }}-offset-{{ label_width }} col-{{ grid_size }}-{{ 12 - label_width }}">{{ f.description }}</span>
+	{%- endif %}
+	{%- if f.errors %}
+		<ul class="errors col-{{ grid_size }}-offset-{{ label_width }} col-{{ grid_size }}-{{ 12 - label_width }}">
+		{% for error in f.errors %}
+			<li>{{ error }}</li>
+		{% endfor %}
+		</ul>
+	{%- endif %}
+</div>
+{%- endmacro %}
+
+{%- macro confirmation_form(form, title, action) %}
+<div class="panel panel-default confirmation-form narrower-panel">
+	<div class="panel-heading">
+		<h1 class="panel-title">{{ title }}</h1>
+	</div>
+	<form method="post" action="" class="panel-body form-horizontal form-labels-right" role="form">
+		{{ form.csrf_token }}
+		{{ caller() }}
+		<div class="form-group actions">
+			<hr />
+			<div>
+				<a href="javascript:history.go(-1)" data-action="cancel" class="btn btn-default">Cancel</a>
+				<button type="submit" class="btn btn-danger">
+					{{ action }}
+				</button>
+			</div>
+		</div>
+	</form>
+</div>
+{%- endmacro %}
+

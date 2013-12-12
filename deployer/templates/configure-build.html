@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+
+
+{% macro render_table_row_field(field) %}
+	<tr class="form-group{% if field.errors %} has-error{% endif %}">
+		<th>{{ field.label }}</th>
+		<td>{{ field(class='form-control')|safe }}
+		{% if field.errors %}
+			<ul class="errors">
+			{% for error in field.errors %}
+				<li>{{ error }}</li>
+			{% endfor %}
+			</ul>
+		{% endif %}
+		</td>
+	</tr>
+{% endmacro %}
+
+
+{% macro render_port_field(ip_field, port_field) %}
+	<tr{% if ip_field.errors or port_field.errors %} class="has-error"{% endif %}>
+		<th>{{ ip_field.label }}</th>
+		<td>{{ ip_field(class='form-control')|safe }}
+		{% if ip_field.errors %}
+			<ul class="errors">
+			{% for error in ip_field.errors %}
+				<li>{{ error }}</li>
+			{% endfor %}
+			</ul>
+		{% endif %}
+		</td>
+		<td>{{ port_field(class='form-control')|safe }}
+		{% if port_field.errors %}
+			<ul class="errors">
+			{% for error in port_field.errors %}
+				<li>{{ error }}</li>
+			{% endfor %}
+			</ul>
+		{% endif %}
+		</td>
+	</tr>
+{% endmacro %}
+
+
+{% macro panel_table() %}
+				<table class="table table-bordered">
+					<thead>
+						<tr>
+						{% for k in varargs %}
+							<th>{{ k }}</th>
+						{% endfor %}
+						</tr>
+					</thead>
+					<tbody>
+						{{ caller() }}
+					</tbody>
+				</table>
+{% endmacro %}
+
+
+{% macro panel(id, title) %}
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">
+					<a data-toggle="collapse" data-parent="#release-config" class="collapsed" href="#{{ id }}"><span></span>{{ title }}</a>
+				</h3>
+			</div>
+			<div class="panel-collapse collapse" id="{{ id }}">
+				{{ caller() }}
+			</div>
+		</div>
+{% endmacro %}
+
+
+{% macro panel_body() %}
+	<div class="panel-body">
+		{{ caller() }}
+	</div>
+{% endmacro %}
+
+
+{% block content %}
+<h1>Deploy build <code>{{ build_tag }}</code></h1>
+
+<form method="post" class="release-build-form ajaxify">
+	<div class="panel-group" id="release-config">
+		{% call panel('environment', 'Configuration values') %}
+			{#% call panel_body() %}
+				<p>Environment variables to pass to the docker container on start.</p>
+			{% endcall %#}
+			{% call panel_table('Key', 'Value') %}
+				{% for k in fields.env %}
+					{{ render_table_row_field(form[k]) }}
+				{% endfor %}
+			{% endcall %}
+		{% endcall %}
+
+		{% call panel('folders', 'Shared folders') %}
+			{% call panel_table('Mountpoint', 'Local folder') %}
+				{% for k in fields.folders %}
+					{{ render_table_row_field(form[k]) }}
+				{% endfor %}
+			{% endcall %}
+		{% endcall %}
+
+		{% call panel('ports', 'Exposed ports') %}
+			{% call panel_table('Container port', 'Host IP', 'Host Port') %}
+				{% for k, _, _ in fields.ports %}
+					{{ render_port_field(form[k + '_host_ip'], form[k + '_host_port']) }}
+				{% endfor %}
+			{% endcall %}
+		{% endcall %}
+
+		{% call panel('links', 'Backing services') %}
+			{% call panel_table('Name', 'Container') %}
+				{% for k in fields.links %}
+					{{ render_table_row_field(form[k]) }}
+				{% endfor %}
+			{% endcall %}
+		{% endcall %}
+	</div>
+
+	<div>
+		<button type="submit" class="btn btn-primary btn-lg">Deploy</button>
+	</div>
+</form>
+{% endblock %}

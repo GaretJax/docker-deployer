@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Instances</h1>
+
+{% if containers %}
+<table class="table instances table-striped">
+	<thead>
+		<tr>
+			<th>Commit</th>
+			<th>Container</th>
+			<th>Created</th>
+			<th>Status</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+	{% for c in containers %}
+		<tr>
+			<td><a href="https://code.apps.wsf/projects/PADI/repos/padi-webshop/commits/{{ c['Tag'] }}">{{ c['Tag'] }}</a></td>
+			<td>{{ c['Names']|join(', ') }} ({{ c['Id'][:7] }})</td>
+			<td>{{ c['Created'].strftime('%Y-%m-%d @ %H:%M:%S') }}</td>
+			<td>{{ c['Status'] }}</td>
+			<td>
+				<form action="{{ url_for('deployer.stop_instance', instance_id=c['Id']) }}" method="post">
+					<button type="submit" class="btn btn-danger">Stop</button>
+				</form>
+			</td>
+		</tr>
+	{% endfor %}
+	</tbody>
+</table>
+{% else %}
+<div class="alert alert-info">
+	<strong>No running instances.</strong> Start one from the <a href="{{ url_for('builds.index') }}">builds page</a> now!
+</div>
+{% endif %}
+
+{% endblock %}
+

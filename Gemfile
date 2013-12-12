@@ -4,5 +4,6 @@ group :development do
   gem 'rb-fsevent', '~> 0.9.3'
   gem 'compass', '~> 0.13.alpha.10'
   gem 'compass-960-plugin'
+  gem 'font-awesome-less'
   gem 'bootstrap-sass', '~> 3.0.1.0.rc'
 end

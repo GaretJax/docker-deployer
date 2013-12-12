@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% from 'forms.html' import field %}
+
+{% block content %}
+
+<h1>Add route</h1>
+
+<form method="post">
+
+	{{ field(form.container) }}
+	{{ field(form.routing_key) }}
+	{{ field(form.weight) }}
+
+	<button type="submit" class="btn btn-primary btn-large">Add</button>
+
+</form>
+
+
+{% endblock %}
+

@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+
+{% set html_classes="application-details" %}
+
+{% block content %}
+<div class="button-header">
+	<h1>{{ app.name }} <span class="text-muted">– {{ app.key }}</span></h1>
+	<a class="btn btn-default btn-lg overlay-form" href="{{ url_for('.edit', app_key=app.key) }}">Edit app</a>
+</div>
+
+<div class="desc">
+	<p>{{ app.description }}</p>
+</div>
+
+<h2>Active instances</h2>
+<table class="table builds table-hover">
+	<thead>
+		<tr>
+			<th>Container</th>
+			<th>Build</th>
+			<th>Created</th>
+			<th>Host</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+	{% for inst in app.active_instances %}
+		<tr>
+			<td><a href="{{ url_for('.instance', app_key=app.key, container_id=inst.container[:10]) }}">{{ inst.container[:7] }}</a></td>
+			<td>{{ inst.build.tag }}</td>
+			<td>{{ inst.started.strftime('%Y-%m-%d @ %H:%M:%S') }}</td>
+			<td>{{ inst.host.name }}</td>
+			<td>
+				<a class="btn btn-danger btn-sm overlay-form" href="{{ url_for('.stop', app_key=app.key, container_id=inst.container) }}">Stop</a>
+			</td>
+		</tr>
+	{% endfor %}
+	</tbody>
+</table>
+
+<h2>Recent builds</h2>
+<table class="table builds table-hover">
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Created</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+	{% for build in app.builds.limit(5) %}
+		<tr>
+			<td><a href="{{ url_for('.build', app_key=app.key, build=build.tag) }}">{{ build.tag }}</a></td>
+			<td>{{ build.created.strftime('%Y-%m-%d @ %H:%M:%S') }}</td>
+			<td>
+				<a class="btn btn-primary btn-sm overlay-form" href="{{ url_for('.deploy', app_key=app.key, build=build.tag) }}">Fast deploy</a>
+			</td>
+		</tr>
+	{% endfor %}
+	</tbody>
+</table>
+<p class="table-footer">{{ app.builds.count() - 5 }} more builds</p>
+
+<h2>Deployment templates <a class="btn btn-default overlay-form" href="{{ url_for('.new_template', app_key=app.key) }}">Add template</a></h2>
+<table class="table templates table-hover">
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Description</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+	{% for tpl in app.templates %}
+		<tr>
+			<td>{{ tpl.name }}</td>
+			<td>{{ tpl.description }}</td>
+			<td>
+				<a class="btn btn-default btn-sm overlay-form" href="{{ url_for('.edit_template', app_key=app.key, template_id=tpl.id) }}">Edit</a>
+				<a class="btn btn-danger btn-sm overlay-form" href="{{ url_for('.delete_template', app_key=app.key, template_id=tpl.id) }}">Delete</a>
+			</td>
+		</tr>
+	{% endfor %}
+	</tbody>
+</table>
+
+<h2>Stopped instances</h2>
+<table class="table builds table-hover">
+	<thead>
+		<tr>
+			<th>Container</th>
+			<th>Build</th>
+			<th>Created</th>
+			<th>Stopped</th>
+			<th>Host</th>
+		</tr>
+	</thead>
+	<tbody>
+	{% for inst in app.inactive_instances.limit(10) %}
+		<tr>
+			<td><a href="{{ url_for('.instance', app_key=app.key, container_id=inst.container[:10]) }}">{{ inst.container[:7] }}</a></td>
+			<td>{{ inst.build.tag }}</td>
+			<td>{{ inst.started.strftime('%Y-%m-%d @ %H:%M:%S') }}</td>
+			<td>{{ inst.stopped.strftime('%Y-%m-%d @ %H:%M:%S') }}</td>
+			<td>{{ inst.host.name }}</td>
+		</tr>
+	{% endfor %}
+	</tbody>
+</table>
+{% with count=app.inactive_instances.count(), shown=5 %}
+	{% if count > shown %}
+		<p class="table-footer">{{ count - shown }} more inactive instances</p>
+	{% endif %}
+{% endwith %}
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="button-header">
+	<h1>Applications</h1>
+	<a class="btn btn-primary btn-lg overlay-form" href="{{ url_for('.new') }}">Add app</a>
+</div>
+
+<table class="applications table table-hover">
+	<thead>
+		<tr>
+			<th>Application</th>
+			<th>Key</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+	<tbody>
+	{% for app in apps %}
+		<tr>
+			<td><a href="{{ url_for('.app', app_key=app.key) }}">{{ app.name }}</a></td>
+			<td>{{ app.key }}</td>
+			<td>{{ app.description }}</td>
+		</tr>
+	{% endfor %}
+	</tbody>
+</table>
+{% endblock %}
+

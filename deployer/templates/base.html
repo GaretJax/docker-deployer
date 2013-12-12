@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js {{ html_classes }}" id="{{ html_id }}"> <!--<![endif]-->
+	<head>
+		<meta charset="utf-8"/>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+
+		<title></title>
+
+		<meta name="description" content=""/>
+		<meta name="viewport" content="width=device-width"/>
+
+		<link rel="stylesheet" href="{{ url_for('static', filename='styles/screen.css') }}"/>
+
+		<script src="{{ url_for('static', filename='scripts/vendor/modernizr-2.6.2-respond-1.1.0.min.js') }}"></script>
+	</head>
+	<body>
+		<!--[if lt IE 7]>
+		<p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+		<![endif]-->
+
+		<header class="navbar navbar-default navbar-fixed-top">
+			<div class="container">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="#">Deployer</a>
+				</div>
+				<div class="navbar-collapse collapse">
+					<ul class="nav navbar-nav">
+						<li><a href="{{ url_for('hosts.index') }}">Hosts</a></li>
+						<li><a href="{{ url_for('apps.index') }}">Applications</a></li>
+
+						<li><a href="{{ url_for('deployer.instances') }}">Instances</a></li>
+						<li><a href="{{ url_for('deployer.routing') }}">Routing</a></li>
+					</ul>
+				</div>
+			</div>
+		</header>
+
+		<div class="container">
+			{% block content %}{% endblock %}
+
+			<footer>
+				<p>Copyright &copy; 2013 Watersports Fashion Company</p>
+			</footer>
+		</div>
+		<script src="{{ url_for('static', filename='scripts/vendor/jquery-2.0.3.min.js') }}"></script>
+		<script src="{{ url_for('static', filename='scripts/vendor/bootstrap-3.0.2.min.js') }}"></script>
+		<script src="{{ url_for('static', filename='scripts/master.js') }}"></script>
+	</body>
+</html>

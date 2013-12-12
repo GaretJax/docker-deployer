@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="button-header">
+	<h1>Routing</h1>
+	<a class="btn btn-primary btn-lg" href="{{ url_for('deployer.add_route') }}">Add route</a>
+</div>
+
+{% if subscriptions %}
+<table class="table routing">
+	<thead>
+		<tr>
+			<th></th>
+			<th>Endpoint</th>
+			<th>Last ping</th>
+			<th>Weight</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+	{% for sub in subscriptions %}
+		{% for node in sub.nodes %}
+		<tr>
+			{% if loop.first %}
+			<td class="key"{% if sub.nodes|count > 1%} rowspan="{{ sub.nodes|count }}"{% endif %}>{{ sub.key }}</td>
+			{% endif %}
+			<td>{{ node.name.split(':')[0] }}</td>
+			<td>{{ node.last_check.strftime('%Y-%m-%d @ %H:%M:%S') }}</td>
+			<td>
+				<form class="form-inline" action="{{ url_for('deployer.change_weight', key=sub.key, name=node.name) }}" method="post">
+					<input type="text" class="form-control" name="weight" value="{{ node.weight }}" />
+					<button type="submit" class="btn btn-default">Change</button>
+				</form>
+			</td>
+			<td>
+				<form action="{{ url_for('deployer.remove_route', key=sub.key, name=node.name) }}" method="post">
+					<button type="submit" class="btn btn-danger">Remove</button>
+				</form>
+			</td>
+		</tr>
+		{% endfor %}
+	{% endfor %}
+	</tbody>
+</table>
+{% else %}
+<div class="alert alert-info">
+	<strong>No routes found.</strong> <a href="{{ url_for('deployer.add_route') }}">Create one</a> now!
+</div>
+{% endif %}
+
+{% endblock %}

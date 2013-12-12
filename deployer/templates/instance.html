@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% set html_classes="build-details" %}
+
+{% block content %}
+
+<div class="button-header">
+	<h1>
+		<ol class="breadcrumb">
+			<li><a href="{{ url_for('.app', app_key=app.key) }}">{{ app.name }}</a></li>
+			<li>Instances</li>
+			<li class="active">{{ instance.container[:7] }}</li>
+		</ol>
+	</h1>
+	{% if not instance.stopped %}
+	<a class="btn btn-danger btn-lg overlay-form" href="{{ url_for('.stop', app_key=app.key, container_id=instance.container) }}">Stop</a>	
+	{% endif %}
+</div>
+
+<dl class="dl-horizontal">
+	<dt>Host</dt>
+	<dd><a href="{{ url_for('hosts.host', host_id=instance.host.id) }}">{{ instance.host.name }}</a></dd>
+
+	<dt>App</dt>
+	<dd><a href="{{ url_for('.app', app_key=app.key) }}">{{ app.name }}</a></dd>
+
+	<dt>Build</dt>
+	<dd><a href="{{ url_for('.build', app_key=app.key, build=instance.build.tag) }}">{{ instance.build.tag }}</a></dd>
+
+	<dt>Started</dt>
+	<dd>{{ instance.started.strftime('%Y-%m-%d @ %H:%M:%S') }}</dd>
+
+	<dt>Stopped</dt>
+	<dd>{% if instance.stopped %}{{ instance.stopped.strftime('%Y-%m-%d @ %H:%M:%S') }}{% else %}–{% endif %}</dd>
+
+	{% if not instance.stopped %}
+	<dt>IP Address</dt>
+	<dd>{{ instance.get_ip() }}</dd>
+	{% endif %}
+</dl>
+
+<h2>Routes</h2>
+<table class="table routes table-hover">
+	<thead>
+		<tr>
+			<th>Routing key</th>
+			<th>Weight</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+	{% for route in instance.routes %}
+		<tr>
+			<td>{{ route.routing_key }}</td>
+			<td>
+				<form class="form-inline" action="" method="post">
+					<input type="text" class="form-control" name="weight" value="{{ route.weight }}" />
+					<button type="submit" class="btn btn-default">Change</button>
+				</form>
+			</td>
+			<td>
+				<a href="" class="btn btn-danger">Remove</button>
+			</td>
+		</tr>
+	{% endfor %}
+	</tbody>
+</table>
+
+<h2>Container config</h2>
+<pre>{{ instance.config|format_json }}</pre>
+
+<h2>Instance logs</h2>
+<pre>{{ instance.get_logs() }}</pre>
+
+{% endblock %}
+

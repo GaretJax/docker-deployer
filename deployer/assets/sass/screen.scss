@@ -1,3 +1,271 @@
 @import "compass";
 @import "variables";
+
+$grid-gutter-width: 16px;
+
 @import "bootstrap";
+@import "font-awesome/font-awesome";
+
+// Custom includes
+@import "forms";
+@import "overlay";
+
+
+body {
+	padding-top: 70px;
+}
+
+h2 {
+	margin-top: 40px;
+}
+
+.application-details {
+	h1 .text-muted {
+		color: #ccc;
+		font-weight: 200;
+		font-size: 0.8em;
+	}
+	.desc {
+		font-size: 21px;
+		font-weight: 200;
+		line-height: 1.4em;
+		margin-bottom: 30px;
+	}
+}
+
+h2 .btn:first-child {
+	margin-left: 20px;
+}
+
+.build-details {
+	h1 .breadcrumb {
+		background: none;
+		padding: 0;
+
+		.active {
+			color: #000;
+		}
+	}
+}
+
+.table-footer {
+	text-align: center;
+	@extend .text-muted;
+	margin-top: -20px;
+	padding: 9px 10px 10px;
+	background: #f9f9f9;
+	text-shadow: #fff 0 1px 0;
+	@include border-bottom-radius(4px);
+}
+
+.button-header {
+	position: relative;
+
+	.btn {
+		position: absolute;
+		right: 0;
+		top: 0;
+	}
+
+	.btn.btn-lg {
+		margin-top: -3px;
+	}
+}
+
+.panel-collapse > .table {
+	margin-bottom: 0;
+
+	&.table-bordered {
+		border-width: 1px 0 0 0;
+	}
+
+	&.table-bordered > *:last-child > tr > * {
+		border-bottom: 0;
+	}
+
+	&.table-bordered > * > tr > *:first-child {
+		border-left: 0;
+	}
+	&.table-bordered > * > tr > *:last-child {
+		border-right: 0;
+	}
+}
+
+.panel-body + .table {
+	margin-top: -10px;
+}
+
+.release-build-form {
+	.panel-group {
+		margin: 20px 0;
+		
+		.panel + .panel {
+			margin-top: 10px;
+		}
+	}
+
+	.panel-heading {
+		padding: 0;
+
+		a span {
+			@extend .fa;
+			color: #666;
+			font-size: 0.9em;
+			text-align: center;
+
+			&:empty {
+				width: 2em;
+			}
+		}
+		a.collapsed span {
+			@extend .fa-chevron-right;
+			vertical-align: 10%;
+		}
+		a span {
+			@extend .fa-chevron-down;
+			vertical-align: 10%;
+		}
+
+		a {
+			display: block;
+			padding: 10px 15px 10px 5px;
+		}
+
+		a:hover {
+			text-decoration: none;
+			background: #ececec;
+		}
+	}
+
+	.table > tbody > tr > th {
+		vertical-align: middle;
+		width: 25%;
+		padding: 0;
+
+		label {
+			margin: 0;
+			padding: 15px 8px;
+			display: block;
+			width: 100%;
+			height: 100%;
+			font-family: "Source Code Pro";
+			font-weight: normal;
+			color: #333;
+		}
+	}
+
+	td.has-error, .has-error td, .has-error th {
+		background: #f2dede;
+	}
+
+	.table .errors {
+		@extend .text-danger;
+		margin: 6px 0 0 0;
+		padding: 0;
+
+		li {
+			display: block;
+			margin-left: 20px;
+			position: relative;
+		}
+
+		li:before {
+			content: "\e014";
+			font-family: 'Glyphicons Halflings';
+			font-style: normal;
+			font-weight: normal;
+			-webkit-font-smoothing: antialiased;
+			-moz-osx-font-smoothing: grayscale;
+			margin-left: -20px;
+			position: absolute;
+		}
+	}
+}
+
+h1 {
+	margin-bottom: 35px;
+}
+h1 + .table,
+.button-header + .table {
+	margin-top: -10px;
+}
+
+table.builds,
+table.instances,
+table.routes,
+table.templates {
+	> tbody > tr > * {
+		vertical-align: middle;
+	}
+
+	th:last-child,
+	td:last-child {
+		text-align: right;
+
+		.dropdown-menu {
+			text-align: left;
+		}
+	}
+}
+
+.table {
+	thead tr:last-child th {
+		border-bottom: 0;
+	}
+	border-bottom: 1px solid #ddd;
+}
+
+table.routes {
+	input {
+		width: 50px;
+		text-align: center;
+	}
+}
+
+table.routing {
+	input {
+		width: 50px;
+		text-align: center;
+	}
+	
+	th:nth-child(2),
+	td:not(.key):first-child,
+	td.key + td {
+		padding-left: 30px;
+	}
+
+	td.key {
+		font-size: 1.5em;
+		
+		border-right: 1px solid #ddd;
+	}
+}
+
+footer {
+	margin-top: 45px;
+	padding-top: 10px;
+	color: #999;
+	border-top: 1px solid #ddd;
+}
+
+form.submitting [type=submit] {
+	position: relative;
+	.cover {
+		position: absolute;
+		left: 0;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		background: inherit;
+		@include border-radius(inherit);
+	}
+	.icon {
+		@extend .fa;
+		@extend .fa-refresh;
+		@extend .fa-spin;
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		margin: -9px 0 0 -7px;
+	}
+}

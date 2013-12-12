@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% set html_classes="application-details" %}
+
+{% block content %}
+
+<div class="button-header">
+	<h1>{{ host.name }}</h1>
+	<a class="btn btn-default btn-lg overlay-form" href="{{ url_for('.edit', host_id=host.id) }}">Edit host</a>
+</div>
+
+<dl class="dl-horizontal">
+	<dt>Endpoint</dt>
+	<dd>{{ host.url }}</dd>
+	<dt>Version</dt>
+	<dd>{{ host.version }}</dd>
+</dl>
+
+<h2>Active instances</h2>
+<table class="table builds table-hover">
+	<thead>
+		<tr>
+			<th>Container</th>
+			<th>Application</th>
+			<th>Build</th>
+			<th>Created</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+	{% for inst in host.active_instances %}
+		<tr>
+			<td><a href="{{ url_for('apps.instance', app_key=inst.build.application.key, container_id=inst.container[:10]) }}">{{ inst.container[:7] }}</a></td>
+			<td>{{ inst.build.application.name }}</td>
+			<td>{{ inst.build.tag }}</td>
+			<td>{{ inst.started.strftime('%Y-%m-%d @ %H:%M:%S') }}</td>
+			<td>
+				<a class="btn btn-primary overlay-form" href="">Stop</a>
+			</td>
+		</tr>
+	{% endfor %}
+	</tbody>
+</table>
+{% endblock %}

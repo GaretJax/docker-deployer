@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Release build <code>{{ build_tag }}</code></h1>
+
+<form method="post" class="key-value-editable">
+	<strong>Environment configuration</strong>
+	<table class="table" data-repeat-min="1">
+		<thead>
+			<tr>
+				<th>Key</th>
+				<th>Value</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for k, v in env.items() + [('', ''),] %}
+			<tr class="form-group">
+				<td>
+					<input type="text" class="form-control key" placeholder="key" value="{{ k }}"/>
+				</td>
+				<td>
+					<input type="text" class="form-control value" placeholder="value" value="{{ v }}"/>
+				</td>
+				<td>
+					<button type="button" class="btn repeater-remove"><span class="glyphicon glyphicon-minus-sign"></span></button>
+				</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+		<tfoot>
+			<tr>
+				<td colspan="3">
+					<button type="button" class="btn repeater-add"><span class="glyphicon glyphicon-plus-sign"></span></button>
+				</td>
+			</tr>
+		</tfoot>
+	</table>
+
+	<strong>Shared folders</strong>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Mountpoint</th>
+				<th>Local folder</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<th>/site</th>
+				<td>
+					<input type="text" class="form-control" placeholder="/path/to/folder"/>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<strong>Ports</strong>
+	<table class="table" data-repeat-min="1">
+		<thead>
+			<tr>
+				<th>Container port</th>
+				<th>Host IP</th>
+				<th>Host Port</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<th>tcp/5510</th>
+				<td>
+					<input type="text" class="form-control" placeholder="/path/to/folder"/>
+				</td>
+				<td>
+					<input type="text" class="form-control" placeholder="/path/to/folder"/>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+
+	<strong>Linked containers</strong>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Name</th>
+				<th>Container</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<th>db</th>
+				<td>
+					<input type="text" class="form-control" placeholder="/path/to/folder"/>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<button type="submit" class="btn btn-primary">Release</button>
+</form>
+
+{% endblock %}
+

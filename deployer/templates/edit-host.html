@@ -1,0 +1,37 @@
+{% extends "ajax_form.html" %}
+
+{% set html_classes='single-form-page' %}
+
+{% from 'forms.html' import hfield %}
+
+{% block content %}
+<div class="panel panel-default application-edit-form narrow-panel">
+	<div class="panel-heading">
+		<h1 class="panel-title">
+		{% if create %}
+		Add a new host
+		{% else %}
+		Edit “{{ host.name }}”
+		{% endif %}
+	</h1>
+	</div>
+	<form method="post" action="" class="panel-body form-horizontal form-labels-right" role="form">
+		{{ form.csrf_token }}
+
+		{{ hfield(form.name, 8, 3) }}
+		{{ hfield(form.url, 8, 3) }}
+		{{ hfield(form.version, 2, 3) }}
+
+		<div class="form-group actions">
+			<hr />
+			<div class="col-sm-offset-3 col-sm-9">
+				<button type="submit" class="btn btn-primary">
+					{% if create %}Add host{% else %}Save{% endif %}
+				</button>
+				<a href="" data-action="cancel" class="btn btn-link">Cancel</a>
+			</div>
+		</div>
+	</form>
+</div>
+{% endblock %}
+

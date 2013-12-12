@@ -1,0 +1,41 @@
+# Dockerfile for the PADI Sportswear webshop builder image.
+# This image does contain development tools to build the dependencies for the
+# webshop package.
+#
+# https://sportswear.padi.com
+
+# Metadata
+FROM ubuntu:quantal
+MAINTAINER Jonathan Stoppani "jonathan.stoppani@wsfcomp.com"
+
+# Setup environment
+ENV DEBIAN_FRONTEND noninteractive
+RUN /usr/sbin/locale-gen en_US.UTF-8 && \
+	/usr/sbin/update-locale LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8
+ENV LANG en_US.UTF-8
+ENV LC_ALL en_US.UTF-8
+
+# Update the system and add additional sources
+RUN /usr/bin/apt-get update && \
+	/usr/bin/apt-get install -y software-properties-common python-software-properties wget && \
+	/usr/bin/add-apt-repository "deb http://archive.ubuntu.com/ubuntu quantal universe" && \
+	/usr/bin/apt-get update && \
+	/usr/bin/apt-get -y upgrade
+
+# Install required dependencies
+# Support installation of wheel packages
+# Coffeescript support
+# Compass support
+# NOTE: pip changes path after it is upgraded
+RUN /usr/bin/apt-get install -y \
+		python-pip python-dev \
+		build-essential libpcre3-dev libjson0-dev \
+		git-core mercurial \
+		libxml2-dev libxslt-dev \
+		libgeoip1 \
+		rubygems1.9.1 libffi-dev ruby1.9.1-dev \
+		coffeescript && \
+	/usr/bin/pip install --upgrade pip && \
+	/usr/local/bin/pip install --upgrade setuptools wheel && \
+	/usr/bin/gem install --no-rdoc --no-ri --version 0.13.alpha.3 compass && \
+	/usr/bin/gem install --no-rdoc --no-ri compass-960-plugin
