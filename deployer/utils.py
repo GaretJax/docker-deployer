@@ -14,7 +14,11 @@ class RecurrentTask(object):
         uwsgi.register_signal(signum, '', self._handle_signal)
         uwsgi.add_timer(signum, interval)
         if now:
-            self._handle_signal(signum)
+            try:
+                self._handle_signal(signum)
+            except Exception as e:
+                print e
+                pass
 
     def _handle_signal(self, signum):
         self.task()
